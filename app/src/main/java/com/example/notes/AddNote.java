@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import static com.example.notes.Home.USERS;
 import static com.example.notes.MainActivity.EMAIL_KEY;
 import static com.example.notes.MainActivity.PASSWORD_KEY;
+import static com.example.notes.NotesAdapter.MyViewHolder.UID_KEY;
 import static com.example.notes.Profile.PHONE_KEY;
 import static com.example.notes.Profile.USERNAME_KEY;
 
@@ -36,13 +37,12 @@ public class AddNote extends AppCompatActivity {
     private String username;
     private String phone;
     private String password;
+    private String userUid;
 
     public static String NOTES = "notes";
 
     private DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(USERS);
     private DatabaseReference noteRef = FirebaseDatabase.getInstance().getReference(NOTES);
-
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,7 @@ public class AddNote extends AppCompatActivity {
         username = homeIntent.getStringExtra(USERNAME_KEY);
         password = homeIntent.getStringExtra(PASSWORD_KEY);
         phone = homeIntent.getStringExtra(PHONE_KEY);
+        userUid = homeIntent.getStringExtra(UID_KEY);
 
         etTitle = (EditText)findViewById(R.id.etTitle);
         etContent = (EditText)findViewById(R.id.etContent);
@@ -76,12 +77,11 @@ public class AddNote extends AppCompatActivity {
     }
 
     public void addNote() {
-        final String uid = user.getUid();
-        userRef.child(uid)
+        userRef.child(userUid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Note note = new Note(uid, etTitle.getText().toString(),
+                        Note note = new Note(userUid, etTitle.getText().toString(),
                                 etTag.getText().toString(), etContent.getText().toString());
                         noteRef.push().setValue(note);
 

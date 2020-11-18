@@ -34,6 +34,7 @@ import java.util.Objects;
 import static com.example.notes.AddNote.NOTES;
 import static com.example.notes.MainActivity.EMAIL_KEY;
 import static com.example.notes.MainActivity.PASSWORD_KEY;
+import static com.example.notes.NotesAdapter.MyViewHolder.UID_KEY;
 import static com.example.notes.Profile.PHONE_KEY;
 import static com.example.notes.Profile.USERNAME_KEY;
 
@@ -81,6 +82,7 @@ public class Home extends AppCompatActivity {
                             phone = Objects.requireNonNull(ds.child("phone").getValue()).toString();
                             password = Objects.requireNonNull(ds.child("password").getValue()).toString();
                             userUid = ds.getKey();
+                            getNotes();
                         } catch (NullPointerException e) {
                             Log.e("Error", "User doesn't have all info", e.getCause());
                         }
@@ -94,6 +96,23 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        fabAdd = (FloatingActionButton)findViewById(R.id.fabAdd);
+
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            Intent intent = new Intent(getApplicationContext(), AddNote.class);
+            intent.putExtra(EMAIL_KEY, email);
+            intent.putExtra(USERNAME_KEY, username);
+            intent.putExtra(PASSWORD_KEY, password);
+            intent.putExtra(PHONE_KEY, phone);
+            intent.putExtra(UID_KEY, userUid);
+            startActivity(intent);
+            }
+        });
+    }
+
+    private void getNotes() {
         notesRef.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -113,20 +132,6 @@ public class Home extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-
-        fabAdd = (FloatingActionButton)findViewById(R.id.fabAdd);
-
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            Intent intent = new Intent(getApplicationContext(), AddNote.class);
-            intent.putExtra(EMAIL_KEY, email);
-            intent.putExtra(USERNAME_KEY, username);
-            intent.putExtra(PASSWORD_KEY, password);
-            intent.putExtra(PHONE_KEY, phone);
-            startActivity(intent);
             }
         });
     }

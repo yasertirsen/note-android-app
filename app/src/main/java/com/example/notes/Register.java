@@ -37,6 +37,11 @@ public class Register extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
 
+    private String email;
+    private String password;
+    private String username;
+    private String phone;
+
     public DatabaseReference db;
 
     @Override
@@ -62,10 +67,10 @@ public class Register extends AppCompatActivity {
     }
 
     private void addUser() {
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
-        final String username = etUsername.getText().toString();
-        String phone = etPhone.getText().toString();
+        email = etEmail.getText().toString();
+        password = etPassword.getText().toString();
+        username = etUsername.getText().toString();
+        phone = etPhone.getText().toString();
 
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password))
             Toast.makeText(this, "Email and password are required", Toast.LENGTH_SHORT).show();
@@ -89,6 +94,7 @@ public class Register extends AppCompatActivity {
                                         }
                                     }
                                 });
+                                saveInRtDb();
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
                             }
@@ -99,16 +105,18 @@ public class Register extends AppCompatActivity {
                             }
                         }
                     });
-
-            //store user in RT DB
-            String id = db.push().getKey();
-
-            User user = new User(email, password, username, phone, new ArrayList<Note>());
-
-            assert id != null;
-            db.child(id).setValue(user);
-
-            Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void saveInRtDb() {
+        //store user in RT DB
+        String id = db.push().getKey();
+
+        User user = new User(email, password, username, phone);
+
+        assert id != null;
+        db.child(id).setValue(user);
+
+        Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show();
     }
 }

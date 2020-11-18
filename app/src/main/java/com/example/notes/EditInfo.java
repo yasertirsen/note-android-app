@@ -52,16 +52,13 @@ public class EditInfo extends AppCompatActivity {
         btnChangeInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User userObj = new  User(email, password ,etUsername.getText().toString(), etPhone.getText().toString(), new ArrayList<Note>());
+                User userObj = new  User(email, password ,etUsername.getText().toString(), etPhone.getText().toString());
                 ref.child(user.getUid()).setValue(userObj).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(EditInfo.this, "Update Successful", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), Profile.class);
+                        Intent intent = new Intent(getApplicationContext(), Home.class);
                         intent.putExtra(EMAIL_KEY, email);
-                        intent.putExtra(USERNAME_KEY, etUsername.getText().toString());
-                        intent.putExtra(PHONE_KEY, etPhone.getText().toString());
-                        intent.putExtra(PASSWORD_KEY, password);
                         startActivity(intent);
                     }
                 });
