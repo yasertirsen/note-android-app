@@ -22,14 +22,13 @@ import java.util.ArrayList;
 import static com.example.notes.Home.USERS;
 import static com.example.notes.MainActivity.EMAIL_KEY;
 import static com.example.notes.MainActivity.PASSWORD_KEY;
+import static com.example.notes.NotesAdapter.MyViewHolder.UID_KEY;
 import static com.example.notes.Profile.PHONE_KEY;
 import static com.example.notes.Profile.USERNAME_KEY;
 
 public class EditInfo extends AppCompatActivity {
 
     private DatabaseReference ref = FirebaseDatabase.getInstance().getReference(USERS);
-
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +40,7 @@ public class EditInfo extends AppCompatActivity {
         final String phone = profileIntent.getStringExtra(PHONE_KEY);
         final String email = profileIntent.getStringExtra(EMAIL_KEY);
         final String password = profileIntent.getStringExtra(PASSWORD_KEY);
+        final String userUid = profileIntent.getStringExtra(UID_KEY);
 
         final EditText etUsername = (EditText)findViewById(R.id.etUsername);
         final EditText etPhone = (EditText)findViewById(R.id.etPhone);
@@ -53,7 +53,8 @@ public class EditInfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 User userObj = new  User(email, password ,etUsername.getText().toString(), etPhone.getText().toString());
-                ref.child(user.getUid()).setValue(userObj).addOnSuccessListener(new OnSuccessListener<Void>() {
+                assert userUid != null;
+                ref.child(userUid).setValue(userObj).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(EditInfo.this, "Update Successful", Toast.LENGTH_SHORT).show();

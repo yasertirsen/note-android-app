@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder> implements Filterable {
+    public static final String DATE_KEY = "DATE_KEY";
     private ArrayList<Note> notes;
     private ArrayList<Note> allNotes;
 
@@ -61,13 +62,17 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         public static final String TITLE_KEY = "TITLE_KEY";
         public static final String TAG_KEY = "TAG_KEY";
         public static final String TEXT_KEY = "TEXT_KEY";
+        public TextView tvTitle;
         public TextView tvNote;
         public TextView tvTag;
+        public TextView tvDate;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
             tvNote = (TextView)itemView.findViewById(R.id.tvNote);
             tvTag = (TextView)itemView.findViewById(R.id.tvTag);
+            tvDate = (TextView)itemView.findViewById(R.id.tvDate);
             itemView.setOnClickListener(this);
         }
 
@@ -77,10 +82,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
             Note note = notes.get(position);
 
             Intent intent = new Intent(v.getContext(), ViewNote.class);
-            intent.putExtra(UID_KEY, note.getUid());
+            intent.
+                    putExtra(UID_KEY, note.getUid());
             intent.putExtra(TITLE_KEY, note.getTitle());
             intent.putExtra(TAG_KEY, note.getTag());
             intent.putExtra(TEXT_KEY, note.getText());
+            intent.putExtra(DATE_KEY, note.getDate());
             v.getContext().startActivity(intent);
         }
     }
@@ -101,8 +108,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final Note note = notes.get(position);
-        holder.tvNote.setText(note.getTitle());
+        holder.tvTitle.setText(note.getTitle());
+        holder.tvNote.setText(note.getText());
         holder.tvTag.setText(note.getTag());
+        holder.tvDate.setText(note.getDate());
     }
 
     @Override

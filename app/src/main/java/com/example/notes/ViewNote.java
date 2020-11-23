@@ -28,6 +28,7 @@ import static com.example.notes.AddNote.NOTES;
 import static com.example.notes.Home.USERS;
 import static com.example.notes.MainActivity.EMAIL_KEY;
 import static com.example.notes.MainActivity.PASSWORD_KEY;
+import static com.example.notes.NotesAdapter.DATE_KEY;
 import static com.example.notes.NotesAdapter.MyViewHolder.TAG_KEY;
 import static com.example.notes.NotesAdapter.MyViewHolder.TEXT_KEY;
 import static com.example.notes.NotesAdapter.MyViewHolder.TITLE_KEY;
@@ -40,6 +41,7 @@ public class ViewNote extends AppCompatActivity {
     private TextView tvTitle;
     private TextView tvContent;
     private TextView tvTag;
+    private TextView tvDate;
 
     private String title;
     private String userUid;
@@ -59,14 +61,17 @@ public class ViewNote extends AppCompatActivity {
         title = rcvIntent.getStringExtra(TITLE_KEY);
         String tag = rcvIntent.getStringExtra(TAG_KEY);
         String text = rcvIntent.getStringExtra(TEXT_KEY);
+        String date = rcvIntent.getStringExtra(DATE_KEY);
 
         tvTitle = (TextView)findViewById(R.id.tvTitle);
         tvContent = (TextView)findViewById(R.id.tvContent);
         tvTag = (TextView)findViewById(R.id.tvTag);
+        tvDate = (TextView)findViewById(R.id.tvDate);
 
         tvTitle.setText(title);
         tvContent.setText(text);
         tvTag.setText(tag);
+        tvDate.setText(date);
 
         db = FirebaseDatabase.getInstance();
         notesRef = db.getReference(NOTES);

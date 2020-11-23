@@ -27,9 +27,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.logging.SimpleFormatter;
 
 import static com.example.notes.AddNote.NOTES;
 import static com.example.notes.MainActivity.EMAIL_KEY;
@@ -52,6 +57,7 @@ public class Home extends AppCompatActivity {
     private String phone;
     private String password;
     private String userUid;
+    private Date date;
 
     private NotesAdapter mAdapter;
 
@@ -122,7 +128,8 @@ public class Home extends AppCompatActivity {
                         Note note = new Note(Objects.requireNonNull(ds.child("uid").getValue()).toString(),
                                 Objects.requireNonNull(ds.child("title").getValue()).toString(),
                                 Objects.requireNonNull(ds.child("tag").getValue()).toString(),
-                                Objects.requireNonNull(ds.child("text").getValue()).toString());
+                                Objects.requireNonNull(ds.child("text").getValue()).toString(),
+                                Objects.requireNonNull(ds.child("date").getValue()).toString());
                         notes.add(note);
                     }
                 }
@@ -168,6 +175,7 @@ public class Home extends AppCompatActivity {
            intent.putExtra(USERNAME_KEY, username);
            intent.putExtra(PASSWORD_KEY, password);
            intent.putExtra(PHONE_KEY, phone);
+            intent.putExtra(UID_KEY, userUid);
            startActivity(intent);
             return true;
         }

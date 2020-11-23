@@ -19,6 +19,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import static com.example.notes.Home.USERS;
 import static com.example.notes.MainActivity.EMAIL_KEY;
 import static com.example.notes.MainActivity.PASSWORD_KEY;
@@ -38,6 +42,8 @@ public class AddNote extends AppCompatActivity {
     private String phone;
     private String password;
     private String userUid;
+    private String date;
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.CANADA);
 
     public static String NOTES = "notes";
 
@@ -81,8 +87,9 @@ public class AddNote extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                         Note note = new Note(userUid, etTitle.getText().toString(),
-                                etTag.getText().toString(), etContent.getText().toString());
+                                etTag.getText().toString(), etContent.getText().toString(), formatter.format(new Date()));
                         noteRef.push().setValue(note);
 
                         Toast.makeText(getApplicationContext(), "Note Saved Successfully", Toast.LENGTH_SHORT).show();
