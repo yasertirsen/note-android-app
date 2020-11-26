@@ -72,8 +72,8 @@ public class Register extends AppCompatActivity {
         username = etUsername.getText().toString();
         phone = etPhone.getText().toString();
 
-        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password))
-            Toast.makeText(this, "Email and password are required", Toast.LENGTH_SHORT).show();
+        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(username) || TextUtils.isEmpty(phone))
+            Toast.makeText(this, "Please fill all info", Toast.LENGTH_SHORT).show();
         else {
 
             mAuth = FirebaseAuth.getInstance();
